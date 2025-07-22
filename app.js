@@ -827,136 +827,107 @@ function trapTab(e, modal) {
     }
 }
 
-// app.js
+// Plexus Animation// Plexus Animation - app.js// This script creates a dynamic plexus animation using HTML5 Canvas.
+// It features particles that move around the canvas, forming lines between them based on proximity.
+// The animation responds to mouse movements, creating a more interactive experience.
 const canvas = document.getElementById('plexusCanvas');
 const ctx = canvas.getContext('2d');
 
-let numParticles = window.innerWidth < 768 ? 80 : 200;
+// Set canvas dimensions to full window size
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Particle settings
+const numParticles = 200; // Number of particles
 const particleRadius = 2;
-const maxLineDistance = 100;
-const particleSpeed = 0.3;
-const mouseInfluenceRadius = 150;
+const maxLineDistance = 100; // Max distance for lines to form
+const particleSpeed = 0.3; // Base speed for particles
+const mouseInfluenceRadius = 150; // Radius around mouse for particle repulsion/attraction
 
 let particles = [];
-let mouse = { x: null, y: null, active: false };
+let mouse = {
+    x: null,
+    y: null,
+    active: false
+};
 
-function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-}
-resizeCanvas();
-
-window.addEventListener('resize', () => {
-    resizeCanvas();
-    initParticles();
-});
-
-window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+// --- Event Listeners for Mouse Interaction ---
+window.addEventListener('mousemove', (event) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
     mouse.active = true;
 });
+
 window.addEventListener('mouseout', () => {
     mouse.active = false;
 });
-canvas.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        mouse.x = touch.clientX;
-        mouse.y = touch.clientY;
-        mouse.active = true;
-    }
-});
-canvas.addEventListener('touchend', () => {
-    mouse.active = false;
+
+// Handle window resizing
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // Reinitialize particles to adapt to new size (optional, but good practice)
+    initParticles();
 });
 
+// --- Particle Class ---
 class Particle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.vx = (Math.random() - 0.5) * particleSpeed * 2;
+        this.vx = (Math.random() - 0.5) * particleSpeed * 2; // Random velocity between -speed and +speed
         this.vy = (Math.random() - 0.5) * particleSpeed * 2;
         this.radius = particleRadius;
     }
 
+    // Update particle position
     update() {
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0) {
+        // Bounce off edges
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
             this.vx *= -1;
         }
-        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
             this.vy *= -1;
         }
 
+        // Mouse repulsion (if mouse is active)
         if (mouse.active) {
             const dx = mouse.x - this.x;
             const dy = mouse.y - this.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
+
             if (distance < mouseInfluenceRadius) {
-                const forceX = dx / distance;
-                const forceY = dy / distance;
-                const force = (mouseInfluenceRadius - distance) / mouseInfluenceRadius;
-                this.x -= forceX * force * 2;
-                this.y -= forceY * force * 2;
+                const forceDirectionX = dx / distance;
+                const forceDirectionY = dy / distance;
+                const force = (mouseInfluenceRadius - distance) / mouseInfluenceRadius; // Stronger force closer to mouse
+                this.x -= forceDirectionX * force * 2; // Push away
+                this.y -= forceDirectionY * force * 2;
             }
         }
     }
 
+    // Draw the particle
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(33, 128, 141, 0.8)';
+        ctx.fillStyle = 'rgba(33, 128, 141, 0.8)'; // White dots, slightly transparent
         ctx.fill();
         ctx.closePath();
     }
 }
 
+// --- Initialization ---
 function initParticles() {
-    particles = [];
+    particles = []; // Clear existing particles
     for (let i = 0; i < numParticles; i++) {
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
         particles.push(new Particle(x, y));
     }
 }
-initParticles();
-
-function drawLines() {
-    for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < maxLineDistance) {
-                ctx.beginPath();
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = `rgba(33, 128, 141, ${1 - dist / maxLineDistance})`;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-                ctx.closePath();
-            }
-        }
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    drawLines();
-    requestAnimationFrame(animate);
-}
-animate();
 
 
 // --- Animation Loop ---
