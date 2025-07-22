@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalpit Sahu - Full-Stack Web Designer & Developer</title>
+    <meta name="description" content="Full-Stack Web Designer & Developer crafting fast, accessible and delightful digital experiences.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="logo">
+                    <span><img src="images/logo.png" alt="logo" id="logo-image"></span>
+                </div>
+                <nav class="nav" aria-label="Main navigation">
+                    <ul class="nav__list">
+                        <li><button class="nav__link" data-section="home" aria-current="page">Home</button></li>
+                        <li><button class="nav__link" data-section="about">About</button></li>
+                        <li><button class="nav__link" data-section="projects">Projects</button></li>
+                        <li><button class="nav__link" data-section="blog">Blog</button></li>
+                        <li><button class="nav__link" data-section="contact">Contact</button></li>
+                    </ul>
+                </nav>
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="theme-toggle__icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section section--active">
+            <!-- Hero -->
+            <div class="hero">
+                <canvas id="plexusCanvas"></canvas>
+                <div class="hero__canvas-container">
+                    <div class="hero__cube">
+                        <div class="cube">
+                            <div class="cube__face cube__face--front"></div>
+                            <div class="cube__face cube__face--back"></div>
+                            <div class="cube__face cube__face--right"></div>
+                            <div class="cube__face cube__face--left"></div>
+                            <div class="cube__face cube__face--top"></div>
+                            <div class="cube__face cube__face--bottom"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero__content">
+                    <div class="container">
+                        <h1 class="hero__title">Kalpit Sahu</h1>
+                        <p class="hero__tagline">Full-Stack Web Designer & Developer</p>
+                        <button class="btn btn--primary hero__cta" data-action="scroll-to-contact">Get In Touch</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Preview -->
+            <div class="about-preview">
+                <div class="container">
+                    <div class="about-preview__grid">
+                        <div class="about-preview__image">
+                            <div class="placeholder-image">KS</div>
+                        </div>
+                        <div class="about-preview__content">
+                            <h2>About Me</h2>
+                            <p id="about-text"></p>
+                            <button class="btn btn--outline" data-section="contact">Let's Work Together</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Preview -->
+            <div class="skills-preview">
+                <div class="container">
+                    <h2>Skills</h2>
+                    <div class="skills-grid" id="skills-container"></div>
+                </div>
+            </div>
+
+            <!-- Projects Preview -->
+            <div class="projects-preview">
+                <div class="container">
+                    <h2>Featured Projects</h2>
+                    <div class="projects-grid" id="projects-preview-container"></div>
+                    <div class="text-center">
+                        <button class="btn btn--outline" data-section="projects">View All Projects</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="testimonials">
+                <div class="container">
+                    <h2>What Clients Say</h2>
+                    <div class="testimonials__carousel" id="testimonials-container"></div>
+                </div>
+            </div>
+
+            <!-- Blog Preview -->
+            <div class="blog-preview">
+                <div class="container">
+                    <h2>Latest Blog Posts</h2>
+                    <div class="blog-grid" id="blog-preview-container"></div>
+                    <div class="text-center">
+                        <button class="btn btn--outline" data-section="blog">Read More Articles</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>About Me</h1>
+                    <div class="about__grid">
+                        <div class="about__image">
+                            <div class="placeholder-image">KS</div>
+                        </div>
+                        <div class="about__content">
+                            <p id="about-full-text"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skills-section">
+                    <h2>Skills & Expertise</h2>
+                    <div class="skills-detailed" id="skills-detailed-container">
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>My Projects</h1>
+                    <p>A collection of work that showcases my expertise in web development and design.</p>
+                </div>
+                <div class="projects-grid" id="projects-container"></div>
+            </div>
+        </section>
+
+        <!-- Project Detail Modal -->
+        <div id="project-modal" class="modal">
+            <div class="modal__content">
+                <button class="modal__close">&times;</button>
+                <div id="project-detail-content"></div>
+            </div>
+        </div>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Blog</h1>
+                    <p>Thoughts on web development, design, and best practices.</p>
+                </div>
+                <div class="blog-filters">
+                    <button class="blog-filter blog-filter--active" data-tag="all">All</button>
+                    <div id="blog-tags"></div>
+                </div>
+                <div class="blog-grid" id="blog-container"></div>
+            </div>
+        </section>
+
+        <!-- Blog Post Modal -->
+        <div id="blog-modal" class="modal">
+            <div class="modal__content">
+                <button class="modal__close">&times;</button>
+                <div id="blog-post-content"></div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Get In Touch</h1>
+                    <p>Ready to bring your project to life? Let's discuss your ideas.</p>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contact-form" action="https://formspree.io/f/myyoerlv" method="POST">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name *</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                            <div class="form-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <div class="form-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="budget" class="form-label">Budget Range</label>
+                            <select id="budget" name="budget" class="form-control">
+                                <option value="">Select budget range</option>
+                                <option value="under-5k">Under $5,000</option>
+                                <option value="5k-10k">$5,000 - $10,000</option>
+                                <option value="10k-25k">$10,000 - $25,000</option>
+                                <option value="25k-plus">$25,000+</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timeline" class="form-label">Timeline</label>
+                            <select id="timeline" name="timeline" class="form-control">
+                                <option value="">Select timeline</option>
+                                <option value="asap">ASAP</option>
+                                <option value="1-month">Within 1 month</option>
+                                <option value="2-3-months">2-3 months</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea id="message" name="message" class="form-control" rows="6" required placeholder="Tell me about your project..."></textarea>
+                            <div class="form-error"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--full-width">Send Message</button>
+                    </form>
+
+                    <div id="form-success" class="form-success hidden">
+                        <div class="success-icon">✓</div>
+                        <h3>Message Sent Successfully!</h3>
+                        <p>Thank you for reaching out. I'll get back to you within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__left">
+                    <p>&copy; 2025 Kalpit Sahu. All rights reserved.</p>
+                </div>
+                <div class="footer__social" id="social-links"></div>
+                <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
